@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Network Visualization</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <!-- Statistics Panel -->
+        <div class="stats-panel">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-label">Total Nodes</div>
+                    <div class="stat-value" id="nodeCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Total Edges</div>
+                    <div class="stat-value" id="edgeCount">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Average Degree</div>
+                    <div class="stat-value" id="avgDegree">0</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Connected Components</div>
+                    <div class="stat-value" id="components">0</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="control-group">
+                <input type="file" id="fileInput" accept=".csv,.tsv,.txt,.sif">
+                <button onclick="handleFileUpload()">Upload</button>
+            </div>
+            <div class="control-group">
+                <input type="text" id="queryInput" placeholder="Enter node IDs (comma-separated)">
+                <button onclick="handleQuery()">Query</button>
+            </div>
+            <div class="control-group">
+                <select id="layoutSelect" onchange="applyLayout(this.value)">
+                    <option value="grid">Grid Layout</option>
+                    <option value="circle">Circle Layout</option>
+                    <option value="cose">CoSE Layout</option>
+                    <option value="concentric">Concentric Layout</option>
+                    <option value="breadthfirst">Breadthfirst Layout</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error"></div>
+        <div id="cy" class="cy-container"></div>
+    </div>
+    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
+
