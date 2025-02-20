@@ -1,21 +1,56 @@
-/* Modern UI styling */
-body {
+/* 
+  CSS Variables for Light Mode and Dark Mode 
+*/
+
+:root {
+    /* Light Mode Variables */
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --panel-bg: #ffffff;
+    --panel-text: #333;
+    --accent-color: #4CAF50;
+    --error-bg: #ff5252;
+    --node-color: #666;
+    --edge-color: #999;
+    --selected-color: #ff0000;
+    /* Stat Box Background for Light Mode */
+    --stat-box-bg: #e8f5e9;
+  }
+  
+  .dark-mode {
+    /* Dark Mode Overrides */
+    --bg-color: #1e1e1e;
+    --text-color: #f5f5f5;
+    --panel-bg: #2a2a2a;
+    --panel-text: #f5f5f5;
+    --accent-color: #80cbc4;
+    --error-bg: #ff5252;
+    --node-color: #888;
+    --edge-color: #bbb;
+    --selected-color: #ffab40;
+    /* Stat Box Background for Dark Mode */
+    --stat-box-bg: #2e3c3a;
+  }
+  
+  body {
     font-family: 'Segoe UI', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
-}
-
-.container {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  
+  .container {
     display: flex;
     flex-direction: column;
     height: 100vh;
     padding: 20px;
     gap: 20px;
-}
-
-.controls {
-    background: white;
+  }
+  
+  .controls {
+    background: var(--panel-bg);
+    color: var(--panel-text);
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -23,97 +58,155 @@ body {
     flex-wrap: wrap;
     gap: 15px;
     align-items: center;
-}
-
-.control-group {
+  }
+  
+  .control-group {
     display: flex;
     align-items: center;
     gap: 10px;
-}
-
-.cy-container {
+  }
+  
+  .cy-container {
     flex: 1;
-    background: white;
+    background: var(--panel-bg);
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     overflow: hidden;
-}
-
-input[type="file"] {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-}
-
-input[type="text"] {
+    position: relative;
+  }
+  
+  input[type="file"],
+  input[type="text"],
+  select {
     padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
-    width: 200px;
-}
-
-button {
+    background: var(--panel-bg);
+    color: var(--text-color);
+  }
+  
+  button {
     padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
+    background-color: var(--accent-color);
+    color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-select {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background: white;
-    cursor: pointer;
-}
-
-.error {
-    color: white;
-    background-color: #ff5252;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  button:hover {
+    filter: brightness(0.9);
+    transform: scale(1.03);
+  }
+  
+  /* Error Notification */
+  .error {
+    color: #fff;
+    background-color: var(--error-bg);
     padding: 12px;
     margin: 10px 0;
     border-radius: 4px;
-    display: none;
-}
-
-/* Stats panel */
-.stats-panel {
-    background: white;
+    opacity: 0;
+    transition: opacity 1s ease;
+  }
+  
+  .error.show {
+    opacity: 1;
+  }
+  
+  /* Progress Bar */
+  .progress-container {
+    width: 100%;
+    background-color: #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 10px 0;
+    height: 10px;
+  }
+  
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--accent-color);
+    transition: width 0.3s ease;
+  }
+  
+  /* Stats Panel */
+  .stats-panel {
+    background: var(--panel-bg);
+    color: var(--panel-text);
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     margin-bottom: 15px;
-}
-
-.stats-grid {
+    transition: box-shadow 0.3s;
+  }
+  
+  .stats-panel:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 15px;
-}
-
-.stat-item {
+  }
+  
+  .stat-item {
     text-align: center;
     padding: 10px;
-    background: #f8f9fa;
     border-radius: 4px;
-}
-
-.stat-label {
+    background: var(--stat-box-bg);
+  }
+  
+  .stat-label {
     font-size: 0.9em;
-    color: #666;
     margin-bottom: 5px;
-}
-
-.stat-value {
+    color: var(--text-color);
+  }
+  
+  .stat-value {
     font-size: 1.2em;
     font-weight: bold;
-    color: #333;
-}
+    color: var(--text-color);
+  }
+  
+  /* Node Details Panel */
+  .node-details-panel {
+    position: absolute;
+    top: 100px;
+    right: 20px;
+    width: 250px;
+    background: var(--panel-bg);
+    color: var(--panel-text);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: opacity 0.3s ease;
+    z-index: 999;
+  }
+  
+  /* Spinner */
+  .spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid var(--accent-color);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+  }
+  
+  @keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+  
+  
+  
+  

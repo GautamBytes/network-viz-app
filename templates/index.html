@@ -1,61 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Network Visualization</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Network Visualization</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <div class="container">
-        <!-- Statistics Panel -->
-        <div class="stats-panel">
-            <div class="stats-grid">
-                <div class="stat-item">
-                    <div class="stat-label">Total Nodes</div>
-                    <div class="stat-value" id="nodeCount">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Total Edges</div>
-                    <div class="stat-value" id="edgeCount">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Average Degree</div>
-                    <div class="stat-value" id="avgDegree">0</div>
-                </div>
-                <div class="stat-item">
-                    <div class="stat-label">Connected Components</div>
-                    <div class="stat-value" id="components">0</div>
-                </div>
-            </div>
+<body id="body">
+  <div class="container">
+    <!-- Statistics Panel -->
+    <div class="stats-panel">
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Total Nodes</div>
+          <div class="stat-value" id="nodeCount">0</div>
         </div>
-
-        <!-- Controls -->
-        <div class="controls">
-            <div class="control-group">
-                <input type="file" id="fileInput" accept=".csv,.tsv,.txt,.sif">
-                <button onclick="handleFileUpload()">Upload</button>
-            </div>
-            <div class="control-group">
-                <input type="text" id="queryInput" placeholder="Enter node IDs (comma-separated)">
-                <button onclick="handleQuery()">Query</button>
-            </div>
-            <div class="control-group">
-                <select id="layoutSelect" onchange="applyLayout(this.value)">
-                    <option value="grid">Grid Layout</option>
-                    <option value="circle">Circle Layout</option>
-                    <option value="cose">CoSE Layout</option>
-                    <option value="concentric">Concentric Layout</option>
-                    <option value="breadthfirst">Breadthfirst Layout</option>
-                </select>
-            </div>
+        <div class="stat-item">
+          <div class="stat-label">Total Edges</div>
+          <div class="stat-value" id="edgeCount">0</div>
         </div>
-
-        <div id="errorMessage" class="error"></div>
-        <div id="cy" class="cy-container"></div>
+        <div class="stat-item">
+          <div class="stat-label">Average Degree</div>
+          <div class="stat-value" id="avgDegree">0</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Connected Components</div>
+          <div class="stat-value" id="components">0</div>
+        </div>
+      </div>
     </div>
-    <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
-    <script src="{{ url_for('static', filename='app.js') }}"></script>
+
+    <!-- Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <input type="file" id="fileInput" accept=".csv,.tsv,.txt,.sif">
+        <button onclick="handleFileUpload()">Upload</button>
+      </div>
+      <!-- Progress Bar -->
+      <div id="progressContainer" class="progress-container" style="display:none;">
+        <div id="progressBar" class="progress-bar"></div>
+      </div>
+      <div class="control-group">
+        <input type="text" id="queryInput" placeholder="Enter node IDs (comma-separated)">
+        <button onclick="handleQuery()">Query</button>
+      </div>
+      <div class="control-group">
+        <label for="layoutSelect">Layout:</label>
+        <select id="layoutSelect" onchange="applyLayout(this.value)">
+          <option value="grid">Grid Layout</option>
+          <option value="circle">Circle Layout</option>
+          <option value="cose">CoSE Layout</option>
+          <option value="concentric">Concentric Layout</option>
+          <option value="breadthfirst">Breadthfirst Layout</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label for="highlightColor">Highlight Color:</label>
+        <input type="color" id="highlightColor" value="#ff9800">
+      </div>
+      <div class="control-group">
+        <button onclick="exportCurrentSubgraph()">Export Subgraph</button>
+      </div>
+      <div class="control-group">
+        <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
+      </div>
+    </div>
+
+    <div id="errorMessage" class="error"></div>
+    <!-- Cytoscape Container -->
+    <div id="cy" class="cy-container"></div>
+    <!-- Spinner -->
+    <div id="spinner" class="spinner" style="display:none;"></div>
+    <!-- Node Details Panel -->
+    <div id="nodeDetails" class="node-details-panel" style="display:none;">
+      <h3>Node Details</h3>
+      <div id="nodeInfo"></div>
+      <button onclick="closeNodeDetails()">Close</button>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/cytoscape/dist/cytoscape.min.js"></script>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
 </body>
 </html>
+
+
+
+
 
